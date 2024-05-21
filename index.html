@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Subdomain Tool</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1>Change Subdomain Tool</h1>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="urlList">Enter your list of URLs here:</label>
+                    <textarea class="form-control" id="urlList" rows="5" placeholder="Enter your list of URLs here..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="newSubdomain">Enter new subdomain:</label>
+                    <input type="text" class="form-control" id="newSubdomain" placeholder="Enter new subdomain">
+                </div>
+                <button class="btn btn-primary" onclick="changeSubdomain()">Change Subdomain</button>
+                <h2 class="mt-4">Updated URLs</h2>
+                <textarea class="form-control" id="updatedUrlList" rows="5" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeSubdomain() {
+            const urlList = document.getElementById('urlList').value.trim().split('\n');
+            const newSubdomain = document.getElementById('newSubdomain').value.trim();
+            const updatedUrlList = urlList.map(url => {
+                try {
+                    const urlObj = new URL(url);
+                    urlObj.hostname = newSubdomain + '.' + urlObj.hostname.split('.').slice(1).join('.');
+                    return urlObj.href;
+                } catch (e) {
+                    return `Invalid URL: ${url}`;
+                }
+            });
+            document.getElementById('updatedUrlList').value = updatedUrlList.join('\n');
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
